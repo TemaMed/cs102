@@ -1,4 +1,4 @@
-d = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w","x","y", "z"]
+alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w","x","y", "z"]
 def encrypt_vigenere(plaintext, keyword):
  """
     >>> encrypt_vigenere("PYTHON", "A")
@@ -15,11 +15,11 @@ def encrypt_vigenere(plaintext, keyword):
       up = False
       if plaintext[j].isupper():
           up = True
-      if plaintext[j].lower() in d:
+      if plaintext[j].lower() in alphabet:
           if up:
-              ciphertext += d[(d.index(keyword[j].lower()) + d.index(plaintext[j].lower())) % len(d)].upper()
+              ciphertext += alphabet[(alphabet.index(keyword[j].lower()) + alphabet.index(plaintext[j].lower())) % len(alphabet)].upper()
           else:
-              ciphertext += d[(d.index(keyword[j].lower()) + d.index(plaintext[j].lower())) % len(d)]
+              ciphertext += alphabet[(alphabet.index(keyword[j].lower()) + alphabet.index(plaintext[j].lower())) % len(alphabet)]
  return ciphertext
 
 def decrypt_vigenere(ciphertext, keyword):
@@ -38,9 +38,9 @@ def decrypt_vigenere(ciphertext, keyword):
       up = False
       if ciphertext[j].isupper():
           up = True
-      if ciphertext[j].lower() in d:
+      if ciphertext[j].lower() in alphabet:
           if up:
-              plaintext += d[(d.index(ciphertext[j].lower()) - d.index(keyword[j].lower())) % len(d)].upper()
+              plaintext += alphabet[(alphabet.index(ciphertext[j].lower()) - alphabet.index(keyword[j].lower())) % len(alphabet)].upper()
           else:
-              plaintext += d[(d.index(ciphertext[j].lower()) - d.index(keyword[j].lower())) % len(d)]
+              plaintext += alphabet[(alphabet.index(ciphertext[j].lower()) - alphabet.index(keyword[j].lower())) % len(alphabet)]
  return plaintext
