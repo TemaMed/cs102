@@ -1,46 +1,66 @@
-alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v","w","x","y", "z"]
-def encrypt_vigenere(plaintext, keyword):
- """
-    >>> encrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> encrypt_vigenere("python", "a")
-    'python'
-    >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
-    'LXFOPVEFRNHR'
-    """
- ciphertext = ''
- for i in range (len(plaintext) - len(keyword)):
-     keyword += keyword[i]
- for j in range(len(plaintext)):
-      up = False
-      if plaintext[j].isupper():
-          up = True
-      if plaintext[j].lower() in alphabet:
-          if up:
-              ciphertext += alphabet[(alphabet.index(keyword[j].lower()) + alphabet.index(plaintext[j].lower())) % len(alphabet)].upper()
-          else:
-              ciphertext += alphabet[(alphabet.index(keyword[j].lower()) + alphabet.index(plaintext[j].lower())) % len(alphabet)]
- return ciphertext
+import string
 
-def decrypt_vigenere(ciphertext, keyword):
-"""
-    >>> decrypt_vigenere("PYTHON", "A")
-    'PYTHON'
-    >>> decrypt_vigenere("python", "a")
-    'python'
-    >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
-    'ATTACKATDAWN'
+
+def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     """
- plaintext = ''
- for i in range (len(ciphertext) - len(keyword)):
-     keyword += keyword[i]
- for j in range(len(ciphertext)):
-      up = False
-      if ciphertext[j].isupper():
-          up = True
-      if ciphertext[j].lower() in alphabet:
-          if up:
-              plaintext += alphabet[(alphabet.index(ciphertext[j].lower()) - alphabet.index(keyword[j].lower())) % len(alphabet)].upper()
-          else:
-              plaintext += alphabet[(alphabet.index(ciphertext[j].lower()) - alphabet.index(keyword[j].lower())) % len(alphabet)]
- return plaintext
+        >>> encrypt_vigenere("PYTHON", "A")
+        'PYTHON'
+        >>> encrypt_vigenere("python", "a")
+        'python'
+        >>> encrypt_vigenere("ATTACKATDAWN", "LEMON")
+        'LXFOPVEFRNHR'
+        """
+    ciphertext = ""
+    if len(plaintext) > len(keyword):
+        if len(plaintext) % len(keyword) == 0:
+            keyword *= len(plaintext) // len(keyword)
+        else:
+            keyword *= len(plaintext) // len(keyword) + 1
+    for j in range(len(plaintext)):
+            up = False
+            if plaintext[j].isupper():
+                up = True
+            if plaintext[j].lower() in string.ascii_lowercase:
+                a = string.ascii_lowercase.index(keyword[j].lower())
+                b = string.ascii_lowercase.index(plaintext[j].lower())
+                c = (a + b) % len(string.ascii_lowercase)
+                if up:
+                    ciphertext += string.ascii_lowercase[c].upper()
+                else:
+                    ciphertext += string.ascii_lowercase[c]
+            else:
+                plaintext += ciphertext[j]
+    return ciphertext
+
+
+def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
+    """
+        >>> decrypt_vigenere("PYTHON", "A")
+        'PYTHON'
+        >>> decrypt_vigenere("python", "a")
+        'python'
+        >>> decrypt_vigenere("LXFOPVEFRNHR", "LEMON")
+        'ATTACKATDAWN'
+        """
+    plaintext = ""
+    if len(ciphertext) > len(keyword):
+        if len(ciphertext) % len(keyword) == 0:
+            keyword *= len(ciphertext) // len(keyword)
+        else:
+            keyword *= len(ciphertext) // len(keyword) + 1
+    for j in range(len(ciphertext)):
+            up = False
+            if ciphertext[j].isupper():
+                up = True
+            if ciphertext[j].lower() in string.ascii_lowercase:
+                a = string.ascii_lowercase.index(ciphertext[j].lower())
+                b = string.ascii_lowercase.index(keyword[j].lower())
+                c = (a - b) % len(string.ascii_lowercase)
+                if up:
+                    plaintext += string.ascii_lowercase[c].upper()
+                else:
+                    plaintext += string.ascii_lowercase[c]
+            else:
+                plaintext += ciphertext[j]
+    return plaintext
+
