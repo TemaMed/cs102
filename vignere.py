@@ -42,7 +42,7 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         """
     plaintext = ""
     if len(ciphertext) > len(keyword):
-        for i in range(len(plaintext) - len(keyword)):
+        for i in range(len(ciphertext) - len(keyword)):
             keyword += keyword[i]
     for j in range(len(ciphertext)):
             up = False
@@ -59,4 +59,3 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             else:
                 plaintext += ciphertext[j]
     return plaintext
-
