@@ -12,10 +12,8 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         """
     ciphertext = ""
     if len(plaintext) > len(keyword):
-        if len(plaintext) % len(keyword) == 0:
-            keyword *= len(plaintext) // len(keyword)
-        else:
-            keyword *= len(plaintext) // len(keyword) + 1
+        for i in range(len(plaintext) - len(keyword)):
+            keyword += keyword[i]
     for j in range(len(plaintext)):
             up = False
             if plaintext[j].isupper():
@@ -44,10 +42,8 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         """
     plaintext = ""
     if len(ciphertext) > len(keyword):
-        if len(ciphertext) % len(keyword) == 0:
-            keyword *= len(ciphertext) // len(keyword)
-        else:
-            keyword *= len(ciphertext) // len(keyword) + 1
+        for i in range(len(plaintext) - len(keyword)):
+            keyword += keyword[i]
     for j in range(len(ciphertext)):
             up = False
             if ciphertext[j].isupper():
