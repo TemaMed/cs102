@@ -1,4 +1,7 @@
-def encrypt_caesar(plaintext:str)->str:
+import string
+
+
+def encrypt_caesar(plaintext: str) -> str:
     """
         >>> encrypt_caesar("PYTHON")
         'SBWKRQ'
@@ -9,43 +12,46 @@ def encrypt_caesar(plaintext:str)->str:
         >>> encrypt_caesar("")
         ''
         """
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'
     ciphertext = ""
     for i in range(len(plaintext)):
-      up = False
-      if plaintext[i].isupper():
-         up = True
-      if plaintext[i].lower() in alphabet:
-        if up:
-         ciphertext += alphabet[(3 + alphabet.index(plaintext[i].lower())) % len(alphabet)].upper()
+        up = False
+        if plaintext[i].isupper():
+            up = True
+        if plaintext[i].lower() in string.ascii_lowercase:
+            c = (3 + string.ascii_lowercase.index(plaintext[i].lower())) \
+                % len(string.ascii_lowercase)
+            if up:
+                ciphertext += string.ascii_lowercase[c].upper()
+            else:
+                ciphertext += string.ascii_lowercase[c]
         else:
-         ciphertext += alphabet[(3 + alphabet.index(plaintext[i])) % len(alphabet)]
-      else:
-         ciphertext += plaintext[i]
+                ciphertext += plaintext[i]
     return ciphertext
 
 def decrypt_caesar(ciphertext):
-     """
-        >>> decrypt_caesar("SBWKRQ")
-        'PYTHON'
-        >>> decrypt_caesar("sbwkrq")
-        'python'
-        >>> decrypt_caesar("Sbwkrq3.6")
-        'Python3.6'
-        >>> decrypt_caesar("")
-        ''
-         """
-     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-     plaintext = ""
-     for i in range(len(ciphertext)):
-        up = False
-        if ciphertext[i].isupper():
-         up = True
-        if ciphertext[i].lower() in alphabet:
-            if up:
-                plaintext += alphabet[((alphabet.index(ciphertext[i].lower()))-3) % len(alphabet)].upper()
+        """
+           >>> decrypt_caesar("SBWKRQ")
+           'PYTHON'
+           >>> decrypt_caesar("sbwkrq")
+           'python'
+           >>> decrypt_caesar("Sbwkrq3.6")
+           'Python3.6'
+           >>> decrypt_caesar("")
+           ''
+            """
+        plaintext = ""
+        for i in range(len(ciphertext)):
+            up = False
+            if ciphertext[i].isupper():
+                up = True
+            if ciphertext[i].lower() in string.ascii_lowercase:
+                c = ((string.ascii_lowercase.index(ciphertext[i].lower()))-3) \
+                    % len(string.ascii_lowercase)
+                if up:
+                    plaintext += string.ascii_lowercase[c].upper()
+                else:
+                    plaintext += string.ascii_lowercase[c]
             else:
-                plaintext += alphabet[((alphabet.index(ciphertext[i].lower()))-3) % len(alphabet)]
-        else:
-            plaintext += ciphertext[i]
-     return plaintext
+                    plaintext += ciphertext[i]
+        return plaintext
+
