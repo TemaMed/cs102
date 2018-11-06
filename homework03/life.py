@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+from copy import deepcopy
 
 
 class GameOfLife:
@@ -87,13 +88,14 @@ class GameOfLife:
         :return: Одномерный список ячеек, смежных к ячейке cell
         """
         neighbours = []
-        r, w = cell
-        a = self.cell_height
-        b = self.cell_width
-        for i in range(r - 1, r + 2):
-            for j in range(w - 1, w + 2):
-                if ((-1 < i < b) or (-1 < j < a)) and ((i != r) and (j != w)):
-                    neighbours.append(self.clist[i][j])
+        x, y = cell
+        n = self.cell_height - 1
+        m = self.cell_width - 1
+        for i in range(x - 1, x + 2):
+            for j in range(y - 1, y + 2):
+                if not (0 <= i <= n and 0 <= j <= m) or (i == x and j == y):
+                    continue
+                neighbours.append(self.clist[i][j])
         return neighbours
 
     def update_cell_list(self, cell_list):
@@ -103,7 +105,7 @@ class GameOfLife:
         :param cell_list: Игровое поле, представленное в виде матрицы
         :return: Обновленное игровое поле
         """
-        new_clist = []
+        new_clist = deepcopy(self.clist)
         for i in range(self.cell_height):
             for j in range(self.cell_width):
                 k = sum(self.get_neighbours((i, j)))
@@ -120,4 +122,3 @@ class GameOfLife:
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 20)
     game.run()
-
