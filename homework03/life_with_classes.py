@@ -56,7 +56,6 @@ class CellList:
         self.grid = new_grid
         return self
 
-    @classmethod
     def from_file(cls, filename):
         grid = []
         with open(filename) as f:
