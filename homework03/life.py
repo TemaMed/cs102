@@ -50,7 +50,7 @@ class GameOfLife:
             clock.tick(self.speed)
         pygame.quit()
 
-    def cell_list(self, randomize=True):
+    def cell_list(self, randomize=True) -> list:
         """ Создание списка клеток.
         :param randomize: Если True, то создается список клеток, где
         каждая клетка равновероятно может быть живой (1) или мертвой (0).
@@ -65,7 +65,7 @@ class GameOfLife:
         self.clist = clist
         return self.clist
 
-    def draw_cell_list(self, clist):
+    def draw_cell_list(self, clist: list) -> None:
         """ Отображение списка клеток
         :param rects: Список клеток для отрисовки, представленный в виде матрицы
         """
@@ -82,7 +82,7 @@ class GameOfLife:
                 else:
                     pygame.draw.rect(self.screen, white, (x, y, a, b))
 
-    def get_neighbours(self, cell: tuple):
+    def get_neighbours(self, cell: tuple) -> list:
         """ Вернуть список соседей для указанной ячейки
         :param cell: Позиция ячейки в сетке, задается кортежем вида (row, col)
         :return: Одномерный список ячеек, смежных к ячейке cell
@@ -98,7 +98,7 @@ class GameOfLife:
                 neighbours.append(self.clist[i][j])
         return neighbours
 
-    def update_cell_list(self, cell_list):
+    def update_cell_list(self, cell_list: list) -> list:
         """ Выполнить один шаг игры.
         Обновление всех ячеек происходит одновременно. Функция возвращает
         новое игровое поле.
