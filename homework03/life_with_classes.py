@@ -11,12 +11,12 @@ class Cell:
         self.row = row
         self.col = col
 
-    def is_alive(self):
+    def is_alive(self) -> bool:
         return self.alive
 
 
 class CellList:
-    def __init__(self, nrows, ncols, randomize=True):
+    def __init__(self, nrows: int, ncols: int, randomize=True):
         self.nrows = nrows
         self.ncols = ncols
         if (randomize):
@@ -28,7 +28,7 @@ class CellList:
                           for j in range(ncols)]
                          for i in range(nrows)]
 
-    def get_neighbours(self, cell):
+    def get_neighbours(self, cell: Cell) -> list:
         neighbours = []
         x, y = cell.row, cell.col
         n = self.nrows - 1
@@ -57,7 +57,7 @@ class CellList:
         return self
 
     @classmethod
-    def from_file(cls, filename):
+    def from_file(cls, filename: str):
         grid = []
         with open(filename) as f:
             for i, line in enumerate(f):
