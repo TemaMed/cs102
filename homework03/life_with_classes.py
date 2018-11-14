@@ -96,7 +96,7 @@ class CellList:
 
 
 class GameOfLife:
-    def __init__(self, width=640, height=480, cell_size=10, speed=1):
+    def __init__(self, width=640, height=480, cell_size=10, speed=10):
         self.width = width
         self.height = height
         self.cell_size = cell_size
@@ -114,50 +114,53 @@ class GameOfLife:
         self.speed = speed
 
     def draw_grid(self):
+        """ Отрисовать сетку """
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color('black'), (
-                x, 0), (x, self.height))
+            pygame.draw.line(self.screen, pygame.Color('black'),
+                             (x, 0), (x, self.height))
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color('black'), (
-                0, y), (self.width, y))
+            pygame.draw.line(self.screen, pygame.Color('black'),
+                             (0, y), (self.width, y))
 
     def run(self):
+        """ Запустить игру """
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
+
+        # Создание списка клеток
+        clist = CellList(self.cell_width, self.cell_height, True)
+
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     running = False
             self.draw_grid()
-            self.draw_cell_list()
-            self.clist.update()
+
+            # Отрисовка списка клеток
+            self.draw_cell_list(clist)
+            # Выполнение одного шага игры (обновление состояния ячеек)
+            clist = CellList.update(clist)
+
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
 
-    def cell_list(self, randomize=True):
-        self.clist = CellList(self.cell_width, self.cell_height,
-                              randomize)
-        self.grid = self.clist.grid
+    def draw_cell_list(self, clist) -> None:
 
-    def draw_cell_list(self):
-        for i in range(self.cell_height):
-            for j in range(self.cell_width):
-                x = j * self.cell_size + 1
-                y = i * self.cell_size + 1
-                a = self.cell_size - 1
-                b = self.cell_size - 1
-                if self.grid[j][i].is_alive():
-                    pygame.draw.rect(self.screen, pygame.Color('green'), (
-                        x, y, a, b))
-                else:
-                    pygame.draw.rect(self.screen, pygame.Color('white'), (
-                        x, y, a, b))
+        for cell in clist:
+
+            color_cell = pygame.Color('white')
+
+            if cell.is_alive():
+                color_cell = pygame.Color('green')
+
+            rect = Rect(cell.row * self.cell_size+1, cell.col * self.cell_size+1, self.cell_size-1, self.cell_size-1)
+            pygame.draw.rect(self.screen, color_cell, rect)
 
 
 if __name__ == '__main__':
-    game = GameOfLife(320, 240, 40)
+    game = GameOfLife(320, 240, 20)
     game.run()
