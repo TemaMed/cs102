@@ -42,6 +42,3 @@ def age_predict(user_id: int) -> Optional[float]:
 
 if __name__ == '__main__':
     print('Age:', age_predict(82770248))
-
-
-
