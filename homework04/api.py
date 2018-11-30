@@ -1,10 +1,15 @@
 import requests
 import time
 import config
-from api_models import Message
+
+domain = config.VK_CONFIG['domain']
+access_token = config.VK_CONFIG['access_token']
+version = config.VK_CONFIG['version']
+username = config.PLOTLY_CONFIG['username']
+api_key = config.PLOTLY_CONFIG['api_key']
 
 
-def get(url, params={}, timeout=1, max_retries=5, backoff_factor=0.3):
+def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
     :param url: адрес, на который необходимо выполнить запрос
     :param params: параметры запроса
@@ -14,40 +19,42 @@ def get(url, params={}, timeout=1, max_retries=5, backoff_factor=0.3):
     """
     for i in range(max_retries):
         try:
-            res = requests.get(url, params=params, timeout=timeout)
-            return res
-        except requests.exceptions.RequestException:
+            response = requests.get(url, params=params, timeout=timeout)
+            return response
+        except:
             if i == max_retries - 1:
                 raise
-            backoff_value = backoff_factor * (2 ** i)
-            time.sleep(backoff_value)
+            backoff = backoff_factor * (2 ** i)
+            time.sleep(backoff)
 
 
-def get_friends(user_id: int, fields="") -> dict:
+def get_friends(user_id, fields):
     """ Вернуть данных о друзьях пользователя
-    :param user_id: идентификатор пользователя, список друзей которого нужно получить
-    :param fields: список полей, которые нужно получить для каждого пользователя
+    :param user_id: идентификатор пользователя,
+    список друзей которого нужно получить
+    :param fields: список полей,
+    которые нужно получить для каждого пользователя
     """
     assert isinstance(user_id, int), "user_id must be positive integer"
     assert isinstance(fields, str), "fields must be string"
     assert user_id > 0, "user_id must be positive integer"
 
     query_params = {
-        'domain': config.VK_CONFIG['domain'],
-        'access_token': config.VK_CONFIG['access_token'],
+        'domain': domain,
+        'access_token': access_token,
         'user_id': user_id,
         'fields': fields,
-        'v': config.VK_CONFIG['version']
+        'version': version
     }
 
-    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v={v}".format(
+    query = "{domain}/friends.get?access_token={" \
+            "access_token}&user_id={user_id}&fields={fields}&v={version}".format(
         **query_params)
     response = get(query, query_params)
-    json_doc = response.json()
-    fail = json_doc.get('error')
-    if fail:
-        raise Exception(json_doc['error']['error_msg'])
-    return json_doc['response']['items']
+    err = response.json().get('error')
+    if err:
+        return []
+    return response.json()['response']['items']
 
 
 def messages_get_history(user_id, offset=0, count=200) -> list:
@@ -64,7 +71,7 @@ def messages_get_history(user_id, offset=0, count=200) -> list:
     query_params = {
         'domain': config.VK_CONFIG['domain'],
         'access_token': config.VK_CONFIG['access_token'],
-        'user_id': user_id,
+        'user_id': 82770248,
         'offset': offset,
         'count': count,
         'v': config.VK_CONFIG['version']
@@ -96,3 +103,6 @@ def messages_get_history(user_id, offset=0, count=200) -> list:
             time.sleep(0.4)
     finally:
         return messages
+
+if __name__ == '__main__':
+    print(get_friends(4871626, 'bdate'))
