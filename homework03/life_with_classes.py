@@ -163,4 +163,8 @@ class GameOfLife:
 
 if __name__ == '__main__':
     game = GameOfLife(320, 240, 20)
+<<<<<<< HEAD
     game.run()
+=======
+    game.run()
+>>>>>>> 9f1d38a60cf32a9f8c9aecf4e80682e00d17a1f4
