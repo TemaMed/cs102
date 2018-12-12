@@ -7,6 +7,20 @@ from bs4 import BeautifulSoup
 bot = telebot.TeleBot(config.telebot_CONFIG['access_token'])
 
 
+@bot.message_handler(commands=['start'])
+def echo(message):
+    bot.send_message(message.chat.id, "/monday номер группы чётность недели - рассписание на понедельник")
+    bot.send_message(message.chat.id, "/tuesday номер группы чётность недели - рассписание на вторник")
+    bot.send_message(message.chat.id, "/wednesday номер группы чётность недели - рассписание на среду")
+    bot.send_message(message.chat.id, "/thursday номер группы чётность недели - рассписание на четверг")
+    bot.send_message(message.chat.id, "/friday номер группы чётность недели - рассписание на пятницу")
+    bot.send_message(message.chat.id, "/saturday номер группы чётность недели - рассписание на субботу")
+    bot.send_message(message.chat.id, "/sunday номер группы чётность недели - рассписание на воскресенье")
+    bot.send_message(message.chat.id, "/tommorow номер группы - расписание на завтра")
+    bot.send_message(message.chat.id,  "/near номер группы - ближйшее занятие")
+    bot.send_message(message.chat.id, "/all номер группы - расписание на всю неделю")
+
+
 def get_page(group, week=''):
     if week:
         week = str(week) + '/'
